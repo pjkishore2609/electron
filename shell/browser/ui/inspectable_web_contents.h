@@ -166,6 +166,9 @@ class InspectableWebContents
   void CanShowSurvey(DispatchCallback callback,
                      const std::string& trigger) override {}
 
+  void OnOpenItemComplete(const base::FilePath& path,
+                          const std::string& result);
+
   // content::DevToolsFrontendHostDelegate:
   void HandleMessageFromDevToolsFrontend(base::Value message);
 
