@@ -154,7 +154,6 @@ void NativeWindow::InitFromOptions(const gin_helper::Dictionary& options) {
   } else if (options.Get(options::kCenter, &center) && center) {
     Center();
   }
-
   bool use_content_size = false;
   options.Get(options::kUseContentSize, &use_content_size);
 
@@ -166,8 +165,9 @@ void NativeWindow::InitFromOptions(const gin_helper::Dictionary& options) {
   options.Get(options::kMinWidth, &min_width);
   options.Get(options::kMinHeight, &min_height);
   size_constraints.set_minimum_size(gfx::Size(min_width, min_height));
-  int max_width = size_constraints.GetMaximumSize().width();
-  int max_height = size_constraints.GetMaximumSize().height();
+  gfx::Size max_size = size_constraints.GetMaximumSize();
+  int max_width = max_size.width() > 0 ? max_size.width() : INT_MAX;
+  int max_height = max_size.height() > 0 ? max_size.height() : INT_MAX;
   options.Get(options::kMaxWidth, &max_width);
   options.Get(options::kMaxHeight, &max_height);
   size_constraints.set_maximum_size(gfx::Size(max_width, max_height));
