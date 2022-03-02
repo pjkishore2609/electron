@@ -7,7 +7,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const extract = require('extract-zip');
-const { downloadArtifact } = require('@electron/get');
+const { download } = require('@electron/get');
 
 if (process.env.ELECTRON_SKIP_BINARY_DOWNLOAD) {
   process.exit(0);
@@ -35,16 +35,14 @@ if (platform === 'darwin' && process.platform === 'darwin' && arch === 'x64' &&
     // Ignore failure
   }
 }
-
+console.log("download hello");
 // downloads if not cached
-downloadArtifact({
-  version,
-  artifactName: 'electron',
-  force: process.env.force_no_cache === 'true',
-  cacheRoot: process.env.electron_config_cache,
-  checksums: process.env.electron_use_remote_checksums ? undefined : require('./checksums.json'),
-  platform,
-  arch
+download('17.1.0', {
+  mirrorOptions: {
+    mirror: 'https://s3.amazonaws.com/',
+    customDir: 'electron-1.0.0',
+    customFilename: 'electron-v17.1.0-darwin-x64+2.zip'
+  }
 }).then(extractFile).catch(err => {
   console.error(err.stack);
   process.exit(1);
